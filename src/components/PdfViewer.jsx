@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { Loader2, ZoomIn, ZoomOut, RotateCcw, AlertCircle, FileText, CheckCircle2 } from 'lucide-react';
+import { Loader2, ZoomIn, ZoomOut, RotateCcw, AlertCircle, FileText, ChevronDown } from 'lucide-react';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export default function PdfViewer({ url }) {
   const containerRef = useRef(null);
+  const scrollContainerRef = useRef(null);
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -68,12 +69,16 @@ export default function PdfViewer({ url }) {
 
   // Render All Pages into Canvases
   const renderAllPages = useCallback(async () => {
-    if (!pdfDoc || !containerRef.current) return;
+    if (!pdfDoc) return;
+    const targetContainer = scrollContainerRef.current || containerRef.current;
+    if (!targetContainer) return;
+
     cancelAllRenders();
     setRendering(true);
 
     try {
-      const containerWidth = Math.max(containerRef.current.clientWidth - 24, 280);
+      // scrollContainer clientWidth excludes vertical scrollbar width automatically
+      const containerWidth = Math.max(targetContainer.clientWidth - 36, 280);
       const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
 
       for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
@@ -147,6 +152,13 @@ export default function PdfViewer({ url }) {
   const handleZoomOut = () => setScaleMultiplier((prev) => Math.max(Number((prev - 0.2).toFixed(2)), 0.6));
   const handleResetZoom = () => setScaleMultiplier(1);
 
+  const scrollToPage = (pageNumber) => {
+    const pageEl = document.getElementById(`pdf-page-${pageNumber}`);
+    if (pageEl && scrollContainerRef.current) {
+      pageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   if (error) {
     return (
       <div className="p-8 text-center bg-stone-900/80 rounded-2xl border border-red-500/30 text-stone-300 space-y-4">
@@ -167,16 +179,35 @@ export default function PdfViewer({ url }) {
 
   return (
     <div ref={containerRef} className="w-full flex flex-col items-center">
-      {/* Viewer Header / Zoom Controls Bar */}
-      <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 bg-stone-900/95 backdrop-blur-md rounded-xl border border-stone-800 mb-5 text-xs text-stone-300 shadow-lg">
+      
+      {/* Viewer Header / Zoom & Navigation Controls Bar */}
+      <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 bg-stone-900/95 backdrop-blur-md rounded-xl border border-stone-800 mb-3 text-xs text-stone-300 shadow-lg">
         <div className="flex items-center gap-2 font-mono">
           <FileText className="w-4 h-4 text-amber-400" />
           <span className="font-semibold text-white">Menú Oficial Sushi Hari</span>
           <span className="text-stone-500 hidden sm:inline">•</span>
           <span className="text-[11px] text-stone-400 hidden sm:inline">
-            {numPages > 0 ? `${numPages} Páginas disponibles` : 'Procesando...'}
+            {numPages > 0 ? `${numPages} Páginas (Desplaza para ver más)` : 'Cargando...'}
           </span>
         </div>
+
+        {/* Quick Page Jump Buttons */}
+        {numPages > 1 && (
+          <div className="flex items-center gap-1 bg-stone-800/80 p-1 rounded-lg border border-stone-700/60">
+            {Array.from({ length: numPages }).map((_, idx) => {
+              const p = idx + 1;
+              return (
+                <button
+                  key={p}
+                  onClick={() => scrollToPage(p)}
+                  className="px-2.5 py-1 rounded text-[11px] font-medium transition-colors hover:bg-stone-700 hover:text-white text-stone-300 cursor-pointer"
+                >
+                  Pág. {p}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Zoom Controls */}
         <div className="flex items-center gap-1.5 ml-auto sm:ml-0">
@@ -228,14 +259,18 @@ export default function PdfViewer({ url }) {
         </div>
       )}
 
-      {/* Document Pages Container (Canvas Stack) */}
-      <div className="w-full flex flex-col items-center gap-8 overflow-x-auto pb-4">
+      {/* Scrollable Document Pages Container */}
+      <div
+        ref={scrollContainerRef}
+        className="w-full h-[520px] sm:h-[620px] lg:h-[720px] max-h-[75vh] overflow-y-auto overflow-x-auto rounded-2xl border border-stone-800/90 bg-[#0C0C10] p-3 sm:p-5 flex flex-col items-center gap-6 shadow-inner scroll-smooth"
+      >
         {Array.from({ length: numPages }).map((_, index) => {
           const pageNum = index + 1;
           return (
             <div
               key={pageNum}
-              className="relative rounded-2xl overflow-hidden shadow-2xl border border-stone-800/90 bg-white"
+              id={`pdf-page-${pageNum}`}
+              className="relative rounded-xl overflow-hidden shadow-2xl border border-stone-700/80 bg-white shrink-0"
             >
               {/* Floating page tag */}
               <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-sm text-[11px] font-mono text-stone-200 border border-white/10 pointer-events-none shadow">
@@ -250,7 +285,15 @@ export default function PdfViewer({ url }) {
             </div>
           );
         })}
+
+        {/* Scroll Helper Hint */}
+        {numPages > 1 && (
+          <div className="text-[11px] font-mono text-stone-500 py-3 flex items-center gap-1.5 opacity-80">
+            <span>Fin de la carta digital de Sushi Hari</span>
+          </div>
+        )}
       </div>
+
     </div>
   );
 }
