@@ -95,10 +95,6 @@ export default function HoursLocation() {
             ))}
           </div>
 
-          <div className="pt-2 text-xs text-stone-500 border-t border-stone-800">
-            * Se reciben pedidos para cocina hasta las 19:30 hrs para asegurar la frescura y calidad de preparación.
-          </div>
-
         </div>
 
         {/* Right Column: Physical Address & Map */}
