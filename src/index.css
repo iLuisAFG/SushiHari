@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Karla', sans-serif;
+    background-color: #0A0A0C;
+    color: #F8FAFC;
+  }
+
+  h1, h2, h3, .font-serif-title {
+    font-family: 'Playfair Display SC', 'Playfair Display', serif;
+  }
+
+  .font-jp {
+    font-family: 'Noto Serif JP', serif;
+  }
+}
+
+/* Glassmorphism Classes */
+.glass-nav {
+  background: rgba(14, 14, 18, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(20, 20, 24, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card:hover {
+  border-color: rgba(217, 119, 6, 0.35);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0C;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D97706;
+}
