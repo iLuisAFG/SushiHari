@@ -57,7 +57,7 @@ export default function MenuSection() {
             <motion.a
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
-              href="/menu.pdf"
+              href={`${import.meta.env.BASE_URL}menu.pdf`}
               download="Menu_Sushi_Hari.pdf"
               className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm uppercase tracking-wider text-white bg-gradient-to-r from-red-600 via-amber-600 to-amber-500 hover:from-red-500 hover:to-amber-400 shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2.5 cursor-pointer"
             >
@@ -78,7 +78,7 @@ export default function MenuSection() {
 
             {/* Open Direct Link */}
             <a
-              href="/menu.pdf"
+              href={`${import.meta.env.BASE_URL}menu.pdf`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-4 rounded-xl text-stone-400 hover:text-amber-400 border border-stone-800 hover:border-amber-500/50 bg-stone-900/60 transition-colors"
@@ -104,7 +104,7 @@ export default function MenuSection() {
                     menu.pdf — Visualizador Interactivo
                   </span>
                   <a
-                    href="/menu.pdf"
+                    href={`${import.meta.env.BASE_URL}menu.pdf`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-amber-400 hover:underline flex items-center gap-1 font-semibold"
@@ -113,7 +113,7 @@ export default function MenuSection() {
                   </a>
                 </div>
                 <iframe
-                  src="/menu.pdf#toolbar=0"
+                  src={`${import.meta.env.BASE_URL}menu.pdf#toolbar=0`}
                   title="Menú Sushi Hari PDF"
                   className="w-full h-[550px] rounded-lg border-0 bg-stone-900"
                 />

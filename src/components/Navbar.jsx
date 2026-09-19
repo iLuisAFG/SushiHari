@@ -33,7 +33,7 @@ export default function Navbar() {
           <motion.img 
             whileHover={{ scale: 1.05, rotate: 2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            src="/logo.jpg" 
+            src={`${import.meta.env.BASE_URL}logo.jpg`}
             alt="Sushi Hari Logo" 
             className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover border border-amber-500/30 shadow-md group-hover:border-amber-400 transition-colors"
           />

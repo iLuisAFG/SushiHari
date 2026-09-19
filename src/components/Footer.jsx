@@ -16,7 +16,7 @@ export default function Footer() {
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <img 
-                src="/logo.jpg" 
+                src={`${import.meta.env.BASE_URL}logo.jpg`} 
                 alt="Sushi Hari Logo" 
                 className="w-12 h-12 rounded-xl object-cover border border-amber-500/30"
               />

@@ -125,7 +125,7 @@ export default function Hero() {
               className="relative rounded-3xl p-4 sm:p-5 bg-gradient-to-b from-[#18181D] to-[#0E0E12] border border-amber-500/20 shadow-2xl"
             >
               <img 
-                src="/logo.jpg" 
+                src={`${import.meta.env.BASE_URL}logo.jpg`} 
                 alt="Sushi Hari - Logotipo Oficial Ninja Cat" 
                 className="w-72 h-72 sm:w-88 sm:h-88 object-cover rounded-2xl shadow-inner border border-white/5"
               />
