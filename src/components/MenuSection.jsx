@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Download, ExternalLink, CheckCircle2, BookOpen } from 'lucide-react';
+import { Download, ExternalLink, CheckCircle2, BookOpen } from 'lucide-react';
+import PdfViewer from './PdfViewer';
 
 export default function MenuSection() {
   return (
@@ -48,29 +49,21 @@ export default function MenuSection() {
             </div>
           </div>
 
-          {/* Directly Embedded PDF Viewer Box */}
+          {/* Directly Embedded PDF Viewer Box with Mozilla PDF.js */}
           <div className="pt-4 text-left">
-            <div className="rounded-2xl border border-stone-700 bg-stone-950 p-2 sm:p-3 overflow-hidden shadow-2xl">
-              <div className="p-3 bg-stone-900/90 rounded-xl flex items-center justify-between text-xs text-stone-300 mb-2">
-                <span className="flex items-center gap-2 font-mono font-medium">
-                  <FileText className="w-4 h-4 text-amber-400" />
-                  Menú Oficial Sushi Hari — Carta Digital
-                </span>
+            <div className="rounded-2xl border border-stone-700 bg-stone-950 p-2 sm:p-4 overflow-hidden shadow-2xl">
+              <div className="flex items-center justify-end text-xs text-stone-300 mb-3 px-1">
                 <a
                   href={`${import.meta.env.BASE_URL}menu.pdf`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1.5 font-semibold transition-colors"
                 >
-                  <span>Abrir en pestaña nueva</span>
+                  <span>Abrir archivo PDF original</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
-              <iframe
-                src={`${import.meta.env.BASE_URL}menu.pdf#toolbar=0`}
-                title="Menú Sushi Hari PDF"
-                className="w-full h-[520px] sm:h-[650px] lg:h-[750px] rounded-lg border-0 bg-stone-900"
-              />
+              <PdfViewer url={`${import.meta.env.BASE_URL}menu.pdf`} />
             </div>
           </div>
 
